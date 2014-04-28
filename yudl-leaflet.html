@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <title>YUDL objects with coordinates</title>
+  
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />
+  <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+  <script src="yudl.geojson" type="text/javascript"></script>
+  <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+	<link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+	<script src="http://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+</head>
+
+  <body>
+    <b>YUDL ojbects with coordinates</b>
+    <div id="map" style="width: 1200px;height: 600px;border: 1px solid #ccc;"></div>
+    <style type="text/css">
+      .leaflet-popup-content-wrapper .leaflet-popup-content {
+        width:auto !important;
+      }
+    </style>
+    <script type="text/javascript">
+
+      var tiles = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      });
+
+      var map = L.map('map').addLayer(tiles);
+      
+      var markers = L.markerClusterGroup();
+      
+      var geoJsonLayer = L.geoJson(yudl, {
+        onEachFeature: function (feature, layer) {
+          layer.bindPopup(feature.properties.Thumbnail);
+        }
+      });
+
+      markers.addLayer(geoJsonLayer);
+
+      map.addLayer(markers);
+      map.fitBounds(markers.getBounds());
+    </script>
+  </body>
+</html>
